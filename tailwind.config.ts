@@ -9,8 +9,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#390089",
+        secondary: "#D9488F",
+      },
+      fontFamily: {
+        alex: ["Alexandria", "sans-serif"],
       },
     },
   },
