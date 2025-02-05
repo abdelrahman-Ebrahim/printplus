@@ -15,6 +15,10 @@ export default {
       fontFamily: {
         alex: ["Alexandria", "sans-serif"],
       },
+      backgroundImage: {
+        heroBg: "url('/hero-bg.svg')",
+        heroBg2: "url('/herobg.png')",
+      },
     },
   },
   plugins: [],
