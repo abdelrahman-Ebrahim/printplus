@@ -19,6 +19,14 @@ export default {
         heroBg: "url('/hero-bg.svg')",
         heroBg2: "url('/herobg.png')",
       },
+      boxShadow: {
+        popularShadow:
+          "-0.88px 0.88px 2.63px 0px #0000001A, " +
+          "-3.5px 4.38px 5.25px 0px #00000017, " +
+          "-7px 10.5px 7.88px 0px #0000000D, " +
+          "-13.13px 18.38px 8.75px 0px #00000003, " +
+          "-20.13px 28px 9.63px 0px #00000000",
+      },
     },
   },
   plugins: [],

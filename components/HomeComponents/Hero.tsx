@@ -4,12 +4,14 @@ import React from "react";
 const Hero = () => {
   return (
     <div
-      className="w-full h-[500px] bg-heroBg2 bg-no-repeat bg-cover flex items-center"
+      className="w-full h-[500px] bg-heroBg2 bg-no-repeat bg-cover flex items-center relative"
       style={{
         backgroundPosition: "-281px -29px", // Move the background image to the left
         backgroundColor: "black", // Add black background color to fill the right space
       }}
     >
+      {/* Ellipse */}
+      <div className="absolute w-[700px] h-[700px] bg-[#D9D9D92B] blur-[218.7px] top-0 -right-[435px]"></div>
       {/* Left Section */}
       <div className="px-11 py-9 flex flex-col gap-6 ms-[119px]">
         {/* Text Section */}
