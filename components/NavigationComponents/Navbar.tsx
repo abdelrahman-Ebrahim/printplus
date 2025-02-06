@@ -12,9 +12,9 @@ const Navbar = () => {
         {/* Right Side Navbar Section */}
         <div className="flex items-center gap-10">
           {/* Main logo div */}
-          <div>
+          <Link href={"/"}>
             <Image src={"/logo.svg"} alt="logo" width={98} height={58} />
-          </div>
+          </Link>
           {/* NavLinks div */}
           <div className="flex items-center gap-8 py-9">
             {navLinks.map((link, index) => (

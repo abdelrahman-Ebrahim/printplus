@@ -16,8 +16,9 @@ export default {
         alex: ["Alexandria", "sans-serif"],
       },
       backgroundImage: {
-        heroBg: "url('/hero-bg.svg')",
         heroBg2: "url('/herobg.png')",
+        bussinessBg2: "url('/BussinessCardsBg.png')",
+        tailBg: "url('/TailBg.png')",
       },
       boxShadow: {
         popularShadow:

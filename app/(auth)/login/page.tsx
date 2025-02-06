@@ -54,7 +54,7 @@ const LoginPage = () => {
         {/* Register Redirect Section */}
         <div className="w-full flex items-center gap-2">
           <p className="text-[#333333]">ليس لديك حساب؟</p>
-          <Link href={"/"} className="font-medium text-secondary">
+          <Link href={"/register"} className="font-medium text-secondary">
             إنشاء حساب جديد
           </Link>
         </div>

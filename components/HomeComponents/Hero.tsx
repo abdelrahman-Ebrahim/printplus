@@ -11,7 +11,7 @@ const Hero = () => {
       }}
     >
       {/* Ellipse */}
-      <div className="absolute w-[700px] h-[700px] bg-[#D9D9D92B] blur-[218.7px] top-0 -right-[435px]"></div>
+      <div className="absolute w-[700px] h-[700px] bg-[#d9d9d94a] blur-[218.7px] top-0 -right-[435px]"/>
       {/* Left Section */}
       <div className="px-11 py-9 flex flex-col gap-6 ms-[119px]">
         {/* Text Section */}

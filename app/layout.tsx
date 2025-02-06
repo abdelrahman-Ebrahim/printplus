@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Navbar from "@/components/NavigationComponents/Navbar";
-import Footer from "@/components/Footer/Footer";
+import Footer from "@/components/Footer/AuthFooter";
 
 export const metadata: Metadata = {
   title: "Print Plus",
@@ -16,11 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="rtl">
-      <body suppressHydrationWarning={true} className="font-alex">
+      <body suppressHydrationWarning={true} className="font-alex overflow-hidden-x-hidden">
         <AppRouterCacheProvider>
           <Navbar />
           {children}
-          <Footer />
         </AppRouterCacheProvider>
       </body>
     </html>
