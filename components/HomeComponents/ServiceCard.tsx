@@ -8,7 +8,12 @@ interface ServiceCardProps {
   description: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ imageSrc, altText, title, description }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({
+  imageSrc,
+  altText,
+  title,
+  description,
+}) => {
   return (
     <div className="flex flex-col items-center justify-center text-center gap-2 px-6">
       <Image
@@ -17,6 +22,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ imageSrc, altText, title, des
         loading="lazy"
         width={72}
         height={72}
+        unoptimized
       />
       <p className="font-medium text-[15px]">{title}</p>
       <p className="text-[13px] text-[#525252] max-w-[228px]">{description}</p>

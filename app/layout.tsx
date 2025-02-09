@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Navbar from "@/components/NavigationComponents/Navbar";
-import Footer from "@/components/Footer/AuthFooter";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Print Plus",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <Navbar />
           {children}
+          <ToastContainer position="top-right" autoClose={3000} />
         </AppRouterCacheProvider>
       </body>
     </html>

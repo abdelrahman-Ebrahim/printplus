@@ -1,134 +1,207 @@
+"use client";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import CustomButton from "@/components/SharedComponents/CustomButton";
 import InputField from "@/components/SharedComponents/InputField";
-import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import SelectField from "@/components/SharedComponents/SelectField";
+
+interface City {
+  value: number;
+  text: string;
+}
+
+interface CompanyRegisterFormData {
+  fullName: string;
+  email: string;
+  mobileNo: string;
+  mobileCode: string;
+  mobileIso: string;
+  cityId: number;
+  password: string;
+  accountType: number;
+  confirmPassword?: string;
+  companyName: string;
+  vatNumber: string;
+  vatAddress: string;
+  vatName: string;
+}
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+const defaultValues: CompanyRegisterFormData = {
+  fullName: "",
+  email: "",
+  mobileNo: "",
+  mobileCode: "",
+  mobileIso: "",
+  password: "",
+  cityId: 2, // Default to Riyadh
+  accountType: 2,
+  companyName: "",
+  vatNumber: "",
+  vatAddress: "",
+  vatName: "",
+};
 
 const CompanyForm = () => {
-  // Define state for each input field
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [taxName, setTaxName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [taxNumber, setTaxNumber] = useState("");
-  const [taxAddress, setTaxAddress] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [cities, setCities] = useState<City[]>([]);
+  const router = useRouter();
+  // State to store phone input data
+  const [mobileNo, setMobileNo] = useState(defaultValues.mobileNo);
+  const [mobileCode, setMobileCode] = useState(defaultValues.mobileCode);
+  const [mobileIso, setMobileIso] = useState(defaultValues.mobileIso);
 
-  // State to manage the disabled state of the button
-  const [isDisabled, setIsDisabled] = useState(true);
+  // Function to handle phone input change
+  const handlePhoneChange = (phone: string, country: any) => {
+    setMobileNo(phone);
+    setMobileCode(`+${country.dialCode}`);
+    setMobileIso(country.countryCode.toUpperCase());
+  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<CompanyRegisterFormData>({ defaultValues });
 
-  // Effect to check if any input is empty
+  // Watch the companyName field
+  const companyName = watch("companyName");
+
+  // Automatically update fullName when companyName changes
   useEffect(() => {
-    const isAnyInputEmpty =
-      !name ||
-      !email ||
-      !phone ||
-      !taxName ||
-      !password ||
-      !confirmPassword ||
-      !taxNumber ||
-      !taxAddress;
-    setIsDisabled(isAnyInputEmpty);
-  }, [
-    name,
-    email,
-    phone,
-    taxName,
-    password,
-    confirmPassword,
-    taxNumber,
-    taxAddress,
-  ]);
+    setValue("fullName", companyName);
+  }, [companyName, setValue]);
 
-  // Handler for form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Add your form submission logic here
-    console.log("Form submitted:", {
-      name,
-      email,
-      phone,
-      taxName,
-      password,
-      confirmPassword,
-      taxNumber,
-      taxAddress,
-    });
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/cities/1`, {
+          headers: { "Accept-Language": "ar-SA" },
+        });
+        if (response.data.success) {
+          setCities(response.data.data);
+          const defaultCity = response.data.data.find(
+            (city: City) => city.text === "الرياض"
+          );
+          if (defaultCity) {
+            setValue("cityId", defaultCity.value);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+        toast.error("فشل تحميل المدن، حاول مرة أخرى.");
+      }
+    };
+    fetchCities();
+  }, [setValue]);
+
+  const onSubmit = async (data: CompanyRegisterFormData) => {
+    try {
+      setLoading(true);
+      // Include updated phone values
+      const { confirmPassword, ...requestData } = {
+        ...data,
+        mobileNo,
+        mobileCode,
+        mobileIso,
+      };
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/register`,
+        requestData
+      );
+      toast.success("تم التسجيل بنجاح تفقد بريدك الالكتروني!");
+      reset();
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "حدث خطأ، حاول مرة أخرى");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      {/* Form Input Fields */}
+    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col md:flex-row items-center gap-[132px]">
-        {/* Right side section */}
         <div className="flex flex-col gap-8 w-full">
           <InputField
-            id="name"
+            id="companyName"
             label="الإسم"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="اسم"
+            {...register("companyName", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
             id="email"
             label="البريد الإلكتروني"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="أدخل البريد الالكتروني"
+            {...register("email", {
+              required: "هذا الحقل مطلوب",
+              pattern: {
+                value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                message: "البريد الإلكتروني غير صالح",
+              },
+            })}
           />
           <InputField
-            id="phone"
+            id="mobileNo"
             isPhoneInput={true}
             label="رقم الجوال"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="512345678"
+            value={mobileNo}
+            onPhoneChange={handlePhoneChange} // Pass the handler function
           />
+
+          <SelectField
+            id="cityId"
+            label="المدينة"
+            options={cities}
+            register={register("cityId", { required: "هذا الحقل مطلوب" })}
+            error={errors.cityId?.message}
+          />
+
           <InputField
-            id="taxname"
+            id="vatName"
             label="الاسم الضريبي"
-            value={taxName}
-            onChange={(e) => setTaxName(e.target.value)}
+            {...register("vatName", { required: "هذا الحقل مطلوب" })}
           />
         </div>
-        {/* Left side section */}
         <div className="flex flex-col gap-8 w-full">
           <InputField
             id="password"
             label="كلمة المرور"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="أدخل كلمة المرور"
             type="password"
+            {...register("password", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
-            id="confirmpassword"
+            id="confirmPassword"
             label="تأكيد كلمة المرور"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="أدخل كلمة المرور"
             type="password"
+            {...register("confirmPassword", {
+              required: "هذا الحقل مطلوب",
+              validate: (value) =>
+                value === watch("password") || "كلمة المرور غير متطابقة",
+            })}
           />
           <InputField
-            id="taxnumber"
+            id="vatNumber"
             label="الرقم الضريبي"
-            value={taxNumber}
-            onChange={(e) => setTaxNumber(e.target.value)}
+            {...register("vatNumber", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
-            id="taxaddress"
+            id="vatAddress"
             label="العنوان الضريبي"
-            value={taxAddress}
-            onChange={(e) => setTaxAddress(e.target.value)}
+            {...register("vatAddress", { required: "هذا الحقل مطلوب" })}
           />
         </div>
       </div>
-      {/* Submit Button */}
       <div>
         <CustomButton
-          label="إنشاء"
+          label={loading ? "جارٍ الإرسال..." : "إنشاء"}
           type="submit"
           className="mt-6"
-          disabled={isDisabled}
+          disabled={!isValid || loading}
         />
       </div>
     </form>
