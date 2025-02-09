@@ -132,11 +132,13 @@ const CompanyForm = () => {
           <InputField
             id="companyName"
             label="الإسم"
+            placeholder="اسم"
             {...register("companyName", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
             id="email"
             label="البريد الإلكتروني"
+            placeholder="أدخل البريد الإلكتروني"
             {...register("email", {
               required: "هذا الحقل مطلوب",
               pattern: {
@@ -171,6 +173,7 @@ const CompanyForm = () => {
           <InputField
             id="password"
             label="كلمة المرور"
+            placeholder="أدخل كلمة المرور"
             type="password"
             {...register("password", { required: "هذا الحقل مطلوب" })}
           />
@@ -178,6 +181,7 @@ const CompanyForm = () => {
             id="confirmPassword"
             label="تأكيد كلمة المرور"
             type="password"
+            placeholder="أدخل كلمة المرور"
             {...register("confirmPassword", {
               required: "هذا الحقل مطلوب",
               validate: (value) =>

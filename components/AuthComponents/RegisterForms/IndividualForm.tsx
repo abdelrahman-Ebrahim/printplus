@@ -110,8 +110,8 @@ const IndividualForm = () => {
         <div className="flex flex-col gap-8 w-full">
           <InputField
             id="fullName"
-            label="الإسم الكامل"
-            placeholder="أدخل اسمك الكامل"
+            label="الإسم"
+            placeholder="اسم"
             {...register("fullName", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
