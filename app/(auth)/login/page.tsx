@@ -42,7 +42,7 @@ const LoginPage = () => {
 
     // ✅ Successful login
     toast.success("تم تسجيل الدخول بنجاح!");
-    router.replace(result?.url || "/"); // 👈 Use `replace` to avoid back navigation issue
+    window.location.href = "/";
   };
 
   return (
