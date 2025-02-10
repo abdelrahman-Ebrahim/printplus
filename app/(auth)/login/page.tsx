@@ -34,6 +34,8 @@ const LoginPage = () => {
       callbackUrl: "/", // 👈 Ensures redirect after login
     });
 
+    console.log("SignIn Result:", result); // Debugging
+
     if (result?.error) {
       toast.error(result.error);
       setError(result.error);
@@ -43,7 +45,11 @@ const LoginPage = () => {
     // ✅ Successful login
     toast.success("تم تسجيل الدخول بنجاح!");
     console.log("Redirect URL:", result?.url); // Debugging
-    router.replace(result?.url || "/"); // 👈 Use `replace` to avoid back navigation issue
+    // Add a small delay before redirecting
+    setTimeout(() => {
+      router.replace(result?.url || "/");
+    }, 500); // 500ms delay
+    // 👈 Use `replace` to avoid back navigation issue
   };
 
   return (
