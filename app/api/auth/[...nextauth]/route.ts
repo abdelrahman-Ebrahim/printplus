@@ -40,14 +40,10 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
-        },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials): Promise<User | null> {
+      async authorize(credentials) {
         try {
           const response = await axios.post(`${API_BASE_URL}/auth/login`, {
             email: credentials?.email,
@@ -83,7 +79,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/",
+    signIn: "/login",
     error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
@@ -98,17 +94,21 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // 🔹 Ensure `session.user` is always defined
       session.user = session.user || ({} as Session["user"]);
 
       if (token) {
-        session.user.id = (token.id as string) ?? "unknown"; // Ensure id is always a string
-        session.user.email = (token.email as string) ?? ""; // Ensure email is always a string
-        session.user.token = (token.accessToken as string) ?? ""; // Ensure token is always a string
-        session.user.refreshToken = (token.refreshToken as string) ?? ""; // Ensure refreshToken is always a string
+        session.user.id = (token.id as string) ?? "unknown";
+        session.user.email = (token.email as string) ?? "";
+        session.user.token = (token.accessToken as string) ?? "";
+        session.user.refreshToken = (token.refreshToken as string) ?? "";
       }
 
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // 👇 Ensure the callbackUrl is respected
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      return url;
     },
   },
 };
