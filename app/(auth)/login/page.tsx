@@ -31,7 +31,7 @@ const LoginPage = () => {
       redirect: false,
       email: data.email,
       password: data.password,
-      callbackUrl: "/", // 👈 Ensures redirect after login
+      callbackUrl: "/", // Ensure correct callback URL
     });
 
     console.log("SignIn Result:", result); // Debugging
@@ -44,10 +44,11 @@ const LoginPage = () => {
 
     // ✅ Successful login
     console.log("Redirect URL:", result?.url); // Debugging
-    toast.success("تم تسجيل الدخول بنجاح!");
+    toast.success("تم تسجيل الدخول بنجاح!", { autoClose: 1000 }); // 👈 Toast appears for 1 second
+
     setTimeout(() => {
       window.location.href = "/";
-    }, 1000);
+    }, 1000); // 👈 Redirect after 1 second
   };
 
   return (
