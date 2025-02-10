@@ -31,17 +31,18 @@ const LoginPage = () => {
       redirect: false,
       email: data.email,
       password: data.password,
+      callbackUrl: "/", // 👈 Ensures redirect after login
     });
 
     if (result?.error) {
-      const errorResponse = result.error;
-      toast.error(errorResponse);
-      setError(errorResponse);
-    } else {
-      // ✅ Successful login: Store token in NextAuth session
-      toast.success("تم تسجيل الدخول بنجاح!");
-      router.push("/"); // Redirect to home page
+      toast.error(result.error);
+      setError(result.error);
+      return; // Exit early to avoid further execution
     }
+
+    // ✅ Successful login
+    toast.success("تم تسجيل الدخول بنجاح!");
+    router.replace(result?.url || "/"); // 👈 Use `replace` to avoid back navigation issue
   };
 
   return (
