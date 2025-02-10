@@ -83,7 +83,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: "/",
     error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
