@@ -61,7 +61,7 @@ const authOptions: NextAuthOptions = {
           }
 
           if (!data.token || !data.refreshToken) {
-            throw new Error("Invalid login response: Missing tokens");
+            throw new Error("Invalid login response: Missing token");
           }
 
           return {
