@@ -43,13 +43,11 @@ const LoginPage = () => {
     }
 
     // ✅ Successful login
-    toast.success("تم تسجيل الدخول بنجاح!");
     console.log("Redirect URL:", result?.url); // Debugging
-    // Add a small delay before redirecting
+    toast.success("تم تسجيل الدخول بنجاح!");
     setTimeout(() => {
-      router.replace(result?.url || "/");
-    }, 500); // 500ms delay
-    // 👈 Use `replace` to avoid back navigation issue
+      window.location.href = "/";
+    }, 1000);
   };
 
   return (
