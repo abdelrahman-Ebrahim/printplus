@@ -40,18 +40,25 @@ const InputField: React.FC<InputFieldProps> = ({
         {isPhoneInput ? (
           <div className="flex flex-row-reverse border border-[#E3E3E3] rounded-lg !px-[15.5px] !py-[15.25px]">
             <PhoneInput
-              country={"sa"} // Default country (Saudi Arabia)
-              enableSearch={true}
-              value={phoneNumber}
-              onChange={(phone, country) => {
-                setPhoneNumber(phone);
-                onPhoneChange && onPhoneChange(phone, country);
-              }}
-              inputClass="!border-0 text-left !ml-2 !w-full !focus:outline-none !placeholder:text-[#525252] !bg-transparent"
-              containerClass="w-full flex flex-row-reverse"
-              buttonClass="!bg-transparent !border-0 !max-w-[40px] !pr-[10px]"
-              dropdownClass="!bg-white !border !border-[#E3E3E3] !rounded-md"
-            />
+  country={"sa"} // Default country (Saudi Arabia)
+  enableSearch={true}
+  value={phoneNumber}
+  onChange={(phone, country) => {
+    setPhoneNumber(phone);
+    onPhoneChange && onPhoneChange(phone, country);
+  }}
+  inputClass="!border-0 text-left !ml-2 !w-full !focus:outline-none !placeholder:text-[#525252] !bg-transparent"
+  containerClass="w-full flex flex-row-reverse"
+  buttonClass="!bg-transparent !border-0 !max-w-[40px] !pr-[10px]"
+  dropdownClass="!bg-white !border !border-[#E3E3E3] !rounded-md"
+  dropdownStyle={{
+    position: "absolute",
+    top: "auto", // Adjust based on available space
+    bottom: "100%", // Open upwards
+    left: 0,
+    zIndex: 9999,
+  }}
+/>
           </div>
         ) : (
           <>
