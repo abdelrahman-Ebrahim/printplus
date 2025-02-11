@@ -11,6 +11,7 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string;
   register?: any;
   isPhoneInput?: boolean;
+  error?: string;
   onPhoneChange?: (phone: string, countryData: any) => void;
 }
 
@@ -22,6 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   register,
   isPhoneInput = false,
+  error,
   onPhoneChange,
   ...rest
 }) => {
@@ -67,9 +69,14 @@ const InputField: React.FC<InputFieldProps> = ({
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 left-3 flex items-center text-gray-500"
               >
-                {showPassword ? <AiOutlineEyeInvisible size={22} /> : <AiOutlineEye size={22} />}
+                {showPassword ? (
+                  <AiOutlineEyeInvisible size={22} />
+                ) : (
+                  <AiOutlineEye size={22} />
+                )}
               </button>
             )}
+            {error && <p className="text-red-500">{error}</p>}
           </>
         )}
       </div>

@@ -1,75 +1,101 @@
 "use client";
-import ResetPassword from "@/components/AuthComponents/ResetPassword";
 import CustomButton from "@/components/SharedComponents/CustomButton";
 import InputField from "@/components/SharedComponents/InputField";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+
+interface ForgetPasswordFormData {
+  email: string;
+}
 
 const ForgetPasswordPage = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(""); // State for the message
-  const [showMessage, setShowMessage] = useState(false); // To toggle the message visibility
-  const [isResetPasswordShown, setIsResetPasswordShown] = useState(false); // State to show the ResetPassword component
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ForgetPasswordFormData>({ mode: "onChange" });
 
-  const isDisabled = email.trim() === "";
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Handle form submission
-  const handleSubmit = (e: any) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+  const onSubmit = async (data: ForgetPasswordFormData) => {
+    setLoading(true);
+    setShowMessage(false);
 
-    if (email.trim() !== "") {
-      setMessage(
-        "تم إرسال بريد إلكتروني الرجاء اتباع التعليمات المرسلة في البريد"
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/forget-password`,
+        { email: data.email },
+        {
+          headers: {
+            "Accept-Language": "ar-SA",
+          },
+        }
       );
-      setShowMessage(true); // Show the message below the button
 
-      // Set a timeout to show ResetPassword component after 3 seconds
-      setTimeout(() => {
-        setIsResetPasswordShown(true); // Show the ResetPassword component after 3 seconds
-      }, 3000);
-    } else {
-      setMessage("الرجاء إدخال بريد إلكتروني صحيح.");
-      setShowMessage(true); // Show the message if the email is not valid
+      const { message } = response.data; // Extract response data
+      setMessage(message);
+      setShowMessage(true);
+    } catch (error: any) {
+      console.error("Forget Password Error:", error);
+
+      // Handle API response errors
+      if (error.response) {
+        setMessage(error.response.data?.message || "حدث خطأ، حاول مرة أخرى");
+      } else if (error.request) {
+        setMessage("لم يتم استلام استجابة من السيرفر، تحقق من اتصالك بالإنترنت.");
+      } else {
+        setMessage("حدث خطأ غير متوقع، حاول مرة أخرى.");
+      }
+
+      setShowMessage(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex justify-center items-center px-10 min-h-[650px]">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center items-center gap-6 md:min-w-[480px]"
       >
         <div className="flex flex-col gap-4 w-full">
           <h2 className="text-2xl text-primary">إعادة تعيين كلمة مرور</h2>
-          {!isResetPasswordShown && (
-            <p className="text-sm text-[#525252]">
-              لإعادة ضبط كلمة المرور الرجاء ادخال البريد الإلكتروني المستخدم
-              لتسجيل الدخول.
-            </p>
-          )}
+          <p className="text-sm text-[#525252]">
+            لإعادة ضبط كلمة المرور الرجاء ادخال البريد الإلكتروني المستخدم
+            لتسجيل الدخول.
+          </p>
         </div>
 
-        {!isResetPasswordShown && (
-          <InputField
-            id="email"
-            label="البريد الإلكتروني"
-            type="email"
-            placeholder="أدخل البريد الالكتروني"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        )}
+        <InputField
+          id="email"
+          label="البريد الإلكتروني"
+          type="email"
+          placeholder="أدخل البريد الالكتروني"
+          {...register("email", {
+            required: "هذا الحقل مطلوب",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "البريد الإلكتروني غير صالح",
+            },
+          })}
+          error={errors.email?.message}
+        />
 
-        {!isResetPasswordShown && (
-          <CustomButton
-            label="ارسال"
-            type="submit"
-            disabled={isDisabled}
-            className="w-[315px]"
-          />
-        )}
+        <CustomButton
+          label="ارسال"
+          type="submit"
+          disabled={!isValid}
+          isLoading={loading}
+          className="w-[315px]"
+        />
 
-        {showMessage && !isResetPasswordShown && (
+        {showMessage && (
           <div className="w-full font-medium text-[#4B5563] mt-4 flex items-center gap-3">
             <div className="flex justify-center items-center bg-[#BEEBCC] rounded-[28px] border-[5px] border-[#E4F7EA]">
               <Image
@@ -82,8 +108,6 @@ const ForgetPasswordPage = () => {
             {message}
           </div>
         )}
-
-        {isResetPasswordShown && <ResetPassword />}
       </form>
     </div>
   );

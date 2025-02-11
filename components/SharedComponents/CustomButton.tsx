@@ -1,9 +1,10 @@
 interface ButtonProps {
   type?: "button" | "submit" | "reset";
   label: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // Accept event object
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   className?: string;
+  isLoading?: boolean; // New prop for loading state
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -12,17 +13,23 @@ const CustomButton: React.FC<ButtonProps> = ({
   onClick,
   disabled = false,
   className = "",
+  isLoading = false,
 }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      disabled={disabled}
-      className={`min-w-[148px] w-[243px] rounded-[500px] px-[45.84px] py-[21.44px] font-medium text-white transition-all 
-          ${disabled ? "bg-[#E0E0E0] text-[#C9C9C9]" : "bg-primary"} 
+      disabled={disabled || isLoading}
+      className={`min-w-[148px] w-[243px] flex items-center justify-center rounded-[500px] px-[45.84px] py-[21.44px] font-medium text-white transition-all 
+          ${
+            disabled || isLoading ? "bg-[#E0E0E0] text-[#C9C9C9]" : "bg-primary"
+          } 
           ${className}`}
     >
       {label}
+      {isLoading && (
+        <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+      )}
     </button>
   );
 };
