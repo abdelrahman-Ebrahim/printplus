@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
   console.log("Middleware - Pathname:", pathname);
 
   // Define protected routes (routes that require authentication)
-  const protectedRoutes = ["/"]; // Add your protected routes here
+  const protectedRoutes = ["/profile"]; // Add your protected routes here
 
   // Define public routes (routes that don't require authentication)
   const publicRoutes = ["/login", "/register", "/forgetpassword", "/resetpassword"]; // Add your public routes here
