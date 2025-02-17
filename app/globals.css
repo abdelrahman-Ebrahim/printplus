@@ -46,3 +46,7 @@
   }
 }
 
+.react-tel-input .form-control {
+  padding-left: 80px !important;
+}
+

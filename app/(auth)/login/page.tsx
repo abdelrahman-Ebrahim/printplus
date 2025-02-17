@@ -52,61 +52,54 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center px-10 min-h-[650px]">
+    <div className="flex justify-center items-center px-10 my-12">
       <form
         className="flex flex-col justify-center items-center gap-6 md:min-w-[480px]"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* Title and subtitle */}
-        <div className="flex flex-col gap-4 w-full">
-          <h2 className="text-2xl text-primary">تسجيل الدخول</h2>
-          <p className="text-sm text-[#525252]">
-            الوصول إلى حساب إطبع الخاص بك.
-          </p>
-        </div>
-
+        <h2 className="text-3xl text-shadeBlack font-bold">Sign in</h2>
         {/* Email Section */}
         <InputField
           id="email"
-          label="البريد الإلكتروني"
+          label="Email*"
           type="email"
-          placeholder="أدخل البريد الالكتروني"
           {...register("email", { required: "هذا الحقل مطلوب" })}
         />
         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-        {/* Password Section */}
-        <InputField
-          id="password"
-          label="كلمة المرور"
-          type="password"
-          placeholder="أدخل كلمة المرور"
-          {...register("password", { required: "هذا الحقل مطلوب" })}
-        />
-        {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
-        )}
+        {/* Password and forgot password Section */}
+        <div className="w-full flex flex-col gap-2">
+          <InputField
+            id="password"
+            label="Password*"
+            type="password"
+            {...register("password", { required: "هذا الحقل مطلوب" })}
+          />
 
+          <Link href={"/forgetpassword"} className="text-xs text-shadeBlack self-end">
+            Forgot password?
+          </Link>
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
+        </div>
+
+        {/* Submit Button*/}
+        <CustomButton
+          type="submit"
+          label={isSubmitting ? "Loging in..." : "Log in "}
+          disabled={isSubmitting}
+          className="w-[96px]"
+        />
         {/* Error Message */}
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* Button and forget password section */}
-        <div className="w-full flex justify-between items-center">
-          <CustomButton
-            type="submit"
-            label={isSubmitting ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
-            disabled={isSubmitting}
-          />
-          <Link href="/forgetpassword" className="font-medium text-[#191919]">
-            نسيت كلمة المرور؟
-          </Link>
-        </div>
-
         {/* Register Redirect Section */}
-        <div className="w-full flex items-center gap-2">
-          <p className="text-[#333333]">ليس لديك حساب؟</p>
-          <Link href="/register" className="font-medium text-secondary">
-            إنشاء حساب جديد
+        <div className="w-full flex justify-center items-center gap-2 mt-2">
+          <p className="text-shadeBlack">Don’t have an account?</p>
+          <Link href="/register" className="font-bold text-shadeBlack">
+            Sign up
           </Link>
         </div>
       </form>

@@ -104,20 +104,20 @@ const IndividualForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col md:flex-row items-center gap-[132px]">
-        {/* Right Side */}
-        <div className="flex flex-col gap-8 w-full">
+    <form
+      className="flex flex-col gap-6 w-[485px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col gap-6 w-full">
           <InputField
             id="fullName"
-            label="الإسم"
-            placeholder="اسم"
+            label="Full name*"
             {...register("fullName", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
             id="email"
-            label="البريد الإلكتروني"
-            placeholder="أدخل البريد الإلكتروني"
+            label="Email*"
             {...register("email", {
               required: "هذا الحقل مطلوب",
               pattern: {
@@ -129,25 +129,20 @@ const IndividualForm = () => {
           <InputField
             id="mobileNo"
             isPhoneInput={true}
-            label="رقم الجوال"
+            label="Mobile Number*"
             value={mobileNo}
             onPhoneChange={handlePhoneChange} // Pass the handler function
           />
-        </div>
 
-        {/* Left Side */}
-        <div className="flex flex-col gap-8 w-full">
           <InputField
             id="password"
-            label="كلمة المرور"
-            placeholder="أدخل كلمة المرور"
+            label="Password*"
             type="password"
             {...register("password", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
             id="confirmpassword"
-            label="تأكيد كلمة المرور"
-            placeholder="أدخل كلمة المرور"
+            label="Confirm Password*"
             type="password"
             {...register("confirmPassword", {
               required: "هذا الحقل مطلوب",
@@ -156,16 +151,16 @@ const IndividualForm = () => {
             })}
           />
         </div>
-      </div>
 
-      {/* Submit Button */}
-      <div>
-        <CustomButton
-          label={loading ? "جارٍ التسجيل..." : "تسجيل"}
-          type="submit"
-          className="mt-6"
-          disabled={!isValid || loading}
-        />
+        {/* Submit Button */}
+        <div>
+          <CustomButton
+            label={loading ? "Signing up..." : "Sign up"} 
+            type="submit"
+            className="mt-6"
+            disabled={!isValid || loading}
+          />
+        </div>
       </div>
     </form>
   );

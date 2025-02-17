@@ -11,6 +11,9 @@ export default {
       colors: {
         primary: "#390089",
         secondary: "#D9488F",
+        shadeBlack: "#0F172A",
+        shadeGray : "#475569",
+        borderColor: "#94A3B8",
       },
       fontFamily: {
         alex: ["Alexandria", "sans-serif"],

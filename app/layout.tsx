@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="rtl">
+    <html lang="en">
       <body suppressHydrationWarning={true} className="font-alex overflow-hidden-x-hidden">
         <AppRouterCacheProvider>
           <Navbar />

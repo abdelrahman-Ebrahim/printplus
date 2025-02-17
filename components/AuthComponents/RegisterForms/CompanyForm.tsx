@@ -126,19 +126,20 @@ const CompanyForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col md:flex-row items-center gap-[132px]">
-        <div className="flex flex-col gap-8 w-full">
+    <form
+      className="flex flex-col gap-6 mx-[79px] w-full justify-center items-center"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="flex flex-col md:flex-row items-start gap-[132px] w-full">
+        <div className="flex flex-col gap-6 w-full">
           <InputField
             id="companyName"
-            label="الإسم"
-            placeholder="اسم"
+            label="Full name*"
             {...register("companyName", { required: "هذا الحقل مطلوب" })}
           />
           <InputField
             id="email"
-            label="البريد الإلكتروني"
-            placeholder="أدخل البريد الإلكتروني"
+            label="Email*"
             {...register("email", {
               required: "هذا الحقل مطلوب",
               pattern: {
@@ -150,59 +151,61 @@ const CompanyForm = () => {
           <InputField
             id="mobileNo"
             isPhoneInput={true}
-            label="رقم الجوال"
+            label="Mobile Number*"
             value={mobileNo}
             onPhoneChange={handlePhoneChange} // Pass the handler function
           />
 
-          <SelectField
-            id="cityId"
-            label="المدينة"
-            options={cities}
-            register={register("cityId", { required: "هذا الحقل مطلوب" })}
-            error={errors.cityId?.message}
-          />
-
-          <InputField
-            id="vatName"
-            label="الاسم الضريبي"
-            {...register("vatName", { required: "هذا الحقل مطلوب" })}
-          />
-        </div>
-        <div className="flex flex-col gap-8 w-full">
           <InputField
             id="password"
-            label="كلمة المرور"
-            placeholder="أدخل كلمة المرور"
+            label="Password*"
             type="password"
             {...register("password", { required: "هذا الحقل مطلوب" })}
           />
+
           <InputField
             id="confirmPassword"
-            label="تأكيد كلمة المرور"
+            label="Confirm Password*"
             type="password"
-            placeholder="أدخل كلمة المرور"
             {...register("confirmPassword", {
               required: "هذا الحقل مطلوب",
               validate: (value) =>
                 value === watch("password") || "كلمة المرور غير متطابقة",
             })}
           />
+        </div>
+
+        <div className="flex flex-col gap-6 w-full">
+          <SelectField
+            id="cityId"
+            label="City*"
+            options={cities}
+            register={register("cityId", { required: "هذا الحقل مطلوب" })}
+            error={errors.cityId?.message}
+          />
+
           <InputField
             id="vatNumber"
-            label="الرقم الضريبي"
+            label="Tax Number*"
             {...register("vatNumber", { required: "هذا الحقل مطلوب" })}
           />
+
+          <InputField
+            id="vatName"
+            label="Tax Name*"
+            {...register("vatName", { required: "هذا الحقل مطلوب" })}
+          />
+
           <InputField
             id="vatAddress"
-            label="العنوان الضريبي"
+            label="Tax Address*"
             {...register("vatAddress", { required: "هذا الحقل مطلوب" })}
           />
         </div>
       </div>
       <div>
         <CustomButton
-          label={loading ? "جارٍ الإرسال..." : "إنشاء"}
+          label={loading ? "Signing up..." : "Sign up"}
           type="submit"
           className="mt-6"
           disabled={!isValid || loading}

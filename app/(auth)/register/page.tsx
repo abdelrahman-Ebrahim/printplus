@@ -14,43 +14,43 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="mx-[210px] my-[5px]">
-      <div className="flex flex-col gap-6">
+    <div className="my-12">
+      <div className="mx-12 flex flex-col justify-center items-center gap-6">
         {/* Header and tab switching */}
         {/* Form Header */}
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl text-primary">إنشاء حساب جديد</h2>
+          <h2 className="text-2xl text-shadeBlack font-medium">Sign up</h2>
         </div>
 
         {/* Form Tab Switcher */}
-        <div className="w-[316px] h-[46px] p-[10px] rounded-[29px] bg-[#F3F3F3F3] self-center flex justify-between items-center">
-          {/* Company Tab */}
-          <div
-            className={`flex justify-center items-center rounded-[29px] flex-1 w-[156px] h-[36px] cursor-pointer ${
-              activeTab === "company"
-                ? "bg-secondary text-white"
-                : "bg-transparent text-black"
-            }`}
-            onClick={() => handleTabClick("company")}
-          >
-            شركة
-          </div>
-
+        <div className="w-[179px] h-[44px] rounded-lg flex justify-center items-center">
           {/* Individual Tab */}
           <div
-            className={`flex justify-center items-center rounded-[29px] flex-1 w-[156px] h-[36px] cursor-pointer ${
+            className={`flex justify-center text-sm items-center border border-r-0 rounded-tl-lg rounded-bl-lg w-[90px] h-[44px] py-[10px] px-[12px] cursor-pointer ${
               activeTab === "individual"
-                ? "bg-secondary text-white"
-                : "bg-transparent text-black"
+                ? "text-[#4F46E5] bg-[#EEF2FF] border-[#6366F1] border-r-[1px] border-r-[#6366F1]"
+                : "bg-transparent text-[#475569]"
             }`}
             onClick={() => handleTabClick("individual")}
           >
-            فرد
+            Individual
+          </div>
+
+          {/* Company Tab */}
+          <div
+            className={`flex justify-center text-sm items-center border border-l-0 rounded-tr-lg rounded-br-lg w-[90px] h-[44px] py-[10px] px-[12px] cursor-pointer ${
+              activeTab === "company"
+                ? "text-[#4F46E5] bg-[#EEF2FF] border-[#6366F1] border-l-[1px] border-l-[#6366F1]"
+                : "bg-transparent text-[#475569]"
+            }`}
+            onClick={() => handleTabClick("company")}
+          >
+            Company
           </div>
         </div>
 
         {/* Conditional Rendering Based on Active Tab */}
-        <div className="mt-6">
+        <div className="w-full flex justify-center">
           {activeTab === "company" ? (
             <CompanyForm /> // Render the Company Form component
           ) : (
@@ -59,20 +59,17 @@ const RegisterPage = () => {
         </div>
 
         {/* Terms and Login Redirect Section */}
-        <div className="flex flex-col gap-[22px]">
+        <div className="flex flex-col justify-center items-center gap-8 mt-2">
           <div className="flex gap-2">
-            <p className="text-[#333333]">
-              بالنقر على زر إنشاء الحساب في الاسفل فانت توافق على
-            </p>
-            <Link href={"/"} className="text-secondary">
-              الشروط والأحكام
+            <p className="text-shadeBlack">Already have an account?</p>
+            <Link href={"/login"} className="text-shadeBlack font-bold">
+              Log in
             </Link>
           </div>
-          <div className="flex gap-2">
-            <p className="text-[#333333]">هل لديك حساب؟</p>
-            <Link href={"/login"} className="text-secondary">
-              تسجيل الدخول
-            </Link>
+          <div>
+            <p className="text-sm text-shadeGray">
+          By signing up, you agree to our <Link href={"/"} className="underline">Privacy Policy</Link> and <Link href={"/"} className="underline">Terms of Service</Link>.
+            </p>
           </div>
         </div>
       </div>
