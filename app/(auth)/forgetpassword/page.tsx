@@ -1,10 +1,11 @@
 "use client";
 import CustomButton from "@/components/SharedComponents/CustomButton";
 import InputField from "@/components/SharedComponents/InputField";
-import Image from "next/image";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation"; // Import useRouter for redirection
 
 interface ForgetPasswordFormData {
   email: string;
@@ -20,6 +21,7 @@ const ForgetPasswordPage = () => {
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter(); // Initialize useRouter
 
   // Handle form submission
   const onSubmit = async (data: ForgetPasswordFormData) => {
@@ -37,9 +39,16 @@ const ForgetPasswordPage = () => {
         }
       );
 
-      const { message } = response.data; // Extract response data
-      setMessage(message);
-      setShowMessage(true);
+      const { success, message } = response.data; // Extract response data
+
+      if (success) {
+        // Redirect to checkemail page with the email as a query parameter
+        router.push(`/checkemail?email=${encodeURIComponent(data.email)}`);
+      } else {
+        // Show error message if the API call returns a false message
+        setMessage(message);
+        setShowMessage(true);
+      }
     } catch (error: any) {
       console.error("Forget Password Error:", error);
 
@@ -47,7 +56,9 @@ const ForgetPasswordPage = () => {
       if (error.response) {
         setMessage(error.response.data?.message || "حدث خطأ، حاول مرة أخرى");
       } else if (error.request) {
-        setMessage("لم يتم استلام استجابة من السيرفر، تحقق من اتصالك بالإنترنت.");
+        setMessage(
+          "لم يتم استلام استجابة من السيرفر، تحقق من اتصالك بالإنترنت."
+        );
       } else {
         setMessage("حدث خطأ غير متوقع، حاول مرة أخرى.");
       }
@@ -59,24 +70,30 @@ const ForgetPasswordPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center px-10 min-h-[650px]">
+    <div className="flex justify-center items-center my-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center gap-6 md:min-w-[480px]"
+        className="flex flex-col justify-center items-center gap-6 md:min-w-[512px]"
       >
-        <div className="flex flex-col gap-4 w-full">
-          <h2 className="text-2xl text-primary">إعادة تعيين كلمة مرور</h2>
-          <p className="text-sm text-[#525252]">
-            لإعادة ضبط كلمة المرور الرجاء ادخال البريد الإلكتروني المستخدم
-            لتسجيل الدخول.
+        <div className="flex flex-col justify-center items-center gap-6 w-full">
+          <h2 className="text-3xl text-shadeBlack font-bold">
+            Forgot your password?
+          </h2>
+          <p className="text-sm text-shadeBlack">
+            We'll email you a link to recover your account.
           </p>
         </div>
 
+        {showMessage && (
+          <div className="w-full text-[#BE123C] text-sm text-center">
+            {message}
+          </div>
+        )}
+
         <InputField
           id="email"
-          label="البريد الإلكتروني"
+          label="Email*"
           type="email"
-          placeholder="أدخل البريد الالكتروني"
           {...register("email", {
             required: "هذا الحقل مطلوب",
             pattern: {
@@ -88,26 +105,15 @@ const ForgetPasswordPage = () => {
         />
 
         <CustomButton
-          label="ارسال"
+          label="Get a reset link"
           type="submit"
           disabled={!isValid}
           isLoading={loading}
-          className="w-[315px]"
         />
 
-        {showMessage && (
-          <div className="w-full font-medium text-[#4B5563] mt-4 flex items-center gap-3">
-            <div className="flex justify-center items-center bg-[#BEEBCC] rounded-[28px] border-[5px] border-[#E4F7EA]">
-              <Image
-                src="/check-circle.svg"
-                alt="check"
-                width={24}
-                height={24}
-              />
-            </div>
-            {message}
-          </div>
-        )}
+        <Link href={"/login"} className="font-bold text-shadeBlack mt-2">
+          Log in
+        </Link>
       </form>
     </div>
   );

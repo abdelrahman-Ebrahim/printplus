@@ -3,7 +3,7 @@ import React from "react";
 
 const SearchBar = () => {
   return (
-    <div className="relative w-[350px] h-12">
+    <div className="relative w-full h-12">
       <input
         className="w-full h-full rounded-[3003px] border-[0.6px] border-[#A7A7A7] px-[15.3px] focus:outline-none placeholder:text-[#525252] placeholder:text-[9.6px]"
         placeholder="ما المنتج الذي تبحث عنه"
