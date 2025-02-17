@@ -18,13 +18,14 @@ const MostSoldCard: React.FC<MostSoldCardProps> = ({
   return (
     <div className="flex flex-col gap-6">
       {/* Card Image div */}
-      <div className="w-[274.13px] h-[333.51px] rounded-[2.56px] flex justify-center items-center">
+      <div className="w-fit h-fit rounded-[2.56px] flex justify-center items-center">
         <Image
           src={imageSrc}
           alt={altText}
           width={296}
           height={296}
           loading="lazy"
+          className="max-h-[182px]"
         />
       </div>
       {/* Card text div */}

@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import PopularGridCard from "./PopularGridCard";
+import Loading from "../SharedComponents/Loading";
+import ErrorSection from "../SharedComponents/ErrorSection";
 
 interface Category {
   categoryId: number;
@@ -48,11 +50,11 @@ const Popular = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading state
+    <Loading />; // Show a loading state
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Show an error message
+    return <ErrorSection />; // Show an error message
   }
 
   return (
